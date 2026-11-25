@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time Archive · Playtime!</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/admin-feedback.css" />
+</head>
+<body>
+
+  <!-- 다른 페이지들의 .viewport-scale과 동일한 1920x1080 캔버스 + 동일한
+       Math.min(w/1920,h/1080) 스케일 공식을 쓰는 고정 오버레이 레이어.
+       로고/Setting 버튼이 페이지가 바뀌어도 항상 같은 화면 좌표에 있도록
+       body를 직접 스케일하는 대신 position:fixed 레이어로 분리해서, 그
+       안에서는 다른 페이지와 완전히 동일하게 동작하면서 아래 갤러리는
+       평범하게 스크롤되도록 했다(가운데 시계/nav-pill은 이 페이지엔 없음). -->
+  <div class="archive-nav-layer" id="archive-nav-layer">
+    <div class="archive-nav-canvas" id="archive-nav-canvas">
+
+      <a class="site-logo archive-logo" href="../index.html">Time Archive</a>
+
+      <button type="button" id="admin-toggle-btn" class="contact-btn">
+        <span class="contact-dot"></span>
+        <span class="contact-label">Setting</span>
+      </button>
+
+    </div>
+  </div>
+
+  <main class="archive-main">
+    <p id="archive-empty-state" class="archive-empty-state" hidden>아직 기록이 없습니다.</p>
+
+    <div id="archive-grid" class="archive-grid"></div>
+  </main>
+
+  <!-- Centered password modal for entering admin mode. Hidden until the
+       Setting button is clicked; the gallery above stays public either way. -->
+  <div id="admin-login-overlay" class="admin-login-overlay" hidden>
+    <div class="admin-login-card">
+      <p class="admin-login-title">관리자 비밀번호</p>
+      <form id="admin-login-form" class="admin-login-form">
+        <input
+          type="password"
+          id="admin-password-input"
+          class="admin-password-input"
+          placeholder="비밀번호"
+          autocomplete="off"
+        />
+        <button type="submit" class="admin-login-btn">입장</button>
+      </form>
+      <p id="admin-login-error" class="admin-login-error" hidden>비밀번호가 올바르지 않습니다.</p>
+      <button type="button" id="admin-login-cancel" class="admin-login-cancel">취소</button>
+    </div>
+  </div>
+
+  <template id="archive-card-template">
+    <article class="archive-card">
+      <div class="archive-card-image-wrap">
+        <img class="archive-card-image" alt="Drawing" />
+      </div>
+      <div class="archive-card-meta">
+        <span class="archive-card-date"></span>
+      </div>
+      <div class="archive-card-admin-controls" hidden>
+        <button type="button" class="archive-card-btn archive-card-move-up" title="앞으로">↑</button>
+        <button type="button" class="archive-card-btn archive-card-move-down" title="뒤로">↓</button>
+        <button type="button" class="archive-card-btn archive-card-hide-toggle"></button>
+        <button type="button" class="archive-card-btn archive-card-delete">삭제</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/services/supabaseConfig.js"></script>
+  <script src="../js/services/feedbackService.js"></script>
+  <script src="../js/services/adminAuth.js"></script>
+  <script src="../js/admin-feedback.js"></script>
+</body>
+</html>
